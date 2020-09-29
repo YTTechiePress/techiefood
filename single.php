@@ -2,4 +2,4 @@
 
 get_header();
 
-echo 'single template';
+echo "Single page";

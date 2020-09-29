@@ -2,4 +2,4 @@
 
 get_header();
 
-echo 'Front page';
+echo 'Front-page';

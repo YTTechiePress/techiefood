@@ -2,4 +2,4 @@
 
 get_header();
 
-echo 'index page';
+echo "Index page";
