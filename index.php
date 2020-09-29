@@ -1,3 +1,5 @@
 <?php
 
-echo "helooooooo";
+get_header();
+
+echo 'index page';
