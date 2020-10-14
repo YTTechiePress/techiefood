@@ -1,0 +1,15 @@
+.orange-background {
+    background-color: orange;
+}
+
+.banner-add-paragraph {
+    margin: 1rem 0;
+}
+.btn-stay-connect {
+    border-radius: 0;
+    color: #000000;
+    margin: 1rem 0;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-transform: uppercase;
+}
