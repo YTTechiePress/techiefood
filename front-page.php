@@ -97,20 +97,22 @@ get_header();
                                                     ?>
                                                         <div class="row">
 
-                                                            <div class="col-4">
+                                                            <div class="col-2">
                                                                 <img src="<?php echo $image[0]; ?>" alt="<?php echo wp_get_attachment_caption( get_the_ID() )?>">
                                                             </div>
 
-                                                            <div class="col-7">
+                                                            <div class="col-8">
                                                                 <h3><?php echo get_the_title(); ?></h3>
                                                                 <p><?php echo get_the_title(); ?></p>
                                                             </div>
 
                                                             <div class="col-1">
                                                                 <?php wc_get_template( 'loop/price.php' ); ?>
+                                                            </div>
+                                                            <div class="col-1">
                                                                 <?php wc_get_template( 'loop/add-to-cart.php' ); ?>
                                                             </div>
-
+                                                            
                                                         </div>
                                                     <?php
                                                        
