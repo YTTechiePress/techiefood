@@ -74,12 +74,10 @@ if ( 'variable' === $product->get_type() ) {
 							<label for="<?php echo $full_name?>"><?php echo $full_name?></label><br />
 
 						<?php
-						// var_dump( $variation_attribute );
 					}
 				}
-				
 			?>
-		  </div>
+		  </div> <!--End of modal-->
 		</div>
 	  </div>
 	</div>
