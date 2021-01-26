@@ -70,9 +70,10 @@ if ( 'variable' === $product->get_type() ) {
 						$full_name = $variation_attribute['attribute_sizes'] . ' ' . $variation_attribute ['attribute_accompaniments'] . ' ' . get_woocommerce_currency_symbol() . $variation_price;
 						
 						?>
-							<input name="<?php echo $full_name?>" value="<?php echo $full_name?>" id="<?php echo $full_name?>" type="checkbox" />
-							<label for="<?php echo $full_name?>"><?php echo $full_name?></label><br />
-
+							<input name="<?php echo $full_name; ?>" value="<?php echo $full_name; ?>" id="<?php echo $full_name?>" type="checkbox" />
+							<label for="<?php echo $full_name; ?>"><?php echo $full_name; ?></label>
+							<a href="?add-to-cart=<?php echo $variation_id; ?>" data-quantity="1" class="button">Add to cart</a>
+							<br />
 						<?php
 					}
 				}
