@@ -36,48 +36,50 @@ if ( 'variable' === $product->get_type() ) {
 	  <div class="modal-dialog" role="document">
 		<div class="modal-content">
 		  <div class="modal-header">
-			<h5 class="modal-title" id="<?php echo $product->slug; ?>Label">Modal title</h5>
+			<h5 class="modal-title" id="<?php echo $product->slug; ?>Label"><?php echo str_replace( '-', ' ', $product->slug ); ?></h5>
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			  <span aria-hidden="true">&times;</span>
 			</button>
 		  </div>
 		  <div class="modal-body">
-			<?php
-				$default_attributes   = $product->get_default_attributes();
-				$available_attributes = $product->get_available_variations();
+		  	<form action="" id="<?php echo $product->slug; ?>" method="get">
+				<?php
+					$default_attributes   = $product->get_default_attributes();
+					$available_attributes = $product->get_available_variations();
 
-				// var_dump($available_attributes);
-				foreach( $available_attributes as $variation_values ) {
-					foreach($variation_values['attributes'] as $key => $attribute_value ) {
-						$attribute_name = str_replace( 'attribute_', '', $key );
-						if ( $attribute_name == $target_attribute ) {
-							$default_value = $product->get_variation_default_attribute( $attribute_name );
-							// if ( $default_value == $attribute_value ) {
-								$variation_ids[] = $variation_values['variation_id'];
-							// }
-							// var_dump($variation_ids);
+					// var_dump($available_attributes);
+					foreach( $available_attributes as $variation_values ) {
+						foreach($variation_values['attributes'] as $key => $attribute_value ) {
+							$attribute_name = str_replace( 'attribute_', '', $key );
+							if ( $attribute_name == $target_attribute ) {
+								$default_value = $product->get_variation_default_attribute( $attribute_name );
+								// if ( $default_value == $attribute_value ) {
+									$variation_ids[] = $variation_values['variation_id'];
+								// }
+								// var_dump($variation_ids);
+							}
 						}
 					}
-				}
 
-				if ( count( $variation_ids ) > 0 ) {
-					foreach( $variation_ids as $variation_id ) {
-						$variation = wc_get_product( $variation_id );
+					if ( count( $variation_ids ) > 0 ) {
+						foreach( $variation_ids as $variation_id ) {
+							$variation = wc_get_product( $variation_id );
 
-						$variation_attribute = $variation->get_variation_attributes();
-						$variation_price = $variation->get_price();
+							$variation_attribute = $variation->get_variation_attributes();
+							$variation_price = $variation->get_price();
 
-						$full_name = $variation_attribute['attribute_sizes'] . ' ' . $variation_attribute ['attribute_accompaniments'] . ' ' . get_woocommerce_currency_symbol() . $variation_price;
-						
-						?>
-							<input name="<?php echo $full_name; ?>" value="<?php echo $full_name; ?>" id="<?php echo $full_name?>" type="checkbox" />
-							<label for="<?php echo $full_name; ?>"><?php echo $full_name; ?></label>
-							<a href="?add-to-cart=<?php echo $variation_id; ?>" data-quantity="1" class="button">Add to cart</a>
-							<br />
-						<?php
+							$full_name = $variation_attribute['attribute_sizes'] . ' ' . $variation_attribute ['attribute_accompaniments'] . ' ' . get_woocommerce_currency_symbol() . $variation_price;
+							
+							?>
+								<input name="<?php echo $variation_id; ?>" value="<?php echo $variation_id; ?>" id="<?php echo $variation_id?>" type="checkbox" />
+								<label for="<?php echo $variation_id; ?>"><?php echo $full_name; ?></label>
+								<br />
+							<?php
+						}
 					}
-				}
-			?>
+				?>
+				<button class="food-add-btn" form="<?php echo $product->slug; ?>" type="submit"><?php _e( 'Add to cart', 'techiefood' ); ?></button>
+			</form>
 		  </div> <!--End of modal-->
 		</div>
 	  </div>
