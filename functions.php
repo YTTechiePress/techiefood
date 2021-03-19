@@ -32,19 +32,47 @@ add_action( 'after_setup_theme', 'techiepress_theme_setup' );
 
 add_action( 'wp_enqueue_scripts', 'techiepress_wp_enqueue_scripts' );
 
-function techiepress_wp_enqueue_scripts() {
-
-	wp_enqueue_script( 'bootstrap-jquery', 'https://code.jquery.com/jquery-3.5.1.slim.min.js', array(), '1.0.0', true );
-	wp_enqueue_script( 'bootstrap-bundle', get_stylesheet_directory_uri() . '/assets/js/bootstrap.bundle.min.js', array( 'bootstrap-jquery' ), '1.0.0', true );
+function techiepress_wp_enqueue_scripts() {	
 	
-	wp_enqueue_style( 'fontawesome-css', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css', '', '1.0.0', 'all' );
-	wp_enqueue_style( 'bootstrap-css', get_stylesheet_directory_uri() . '/assets/css/bootstrap.min.css', '', '1.0.0', 'all' );
-
 	wp_enqueue_style( 'techiepress-food', get_stylesheet_directory_uri() . '/assets/css/style.css', '', '1.0.0', 'all' );
-
+	
 	if ( is_front_page() ) {
-		wp_enqueue_script( 'techiepress-food-jq', 'https://code.jquery.com/jquery-3.5.1.min.js', array(), '1.0.0', true );
-		wp_enqueue_script( 'techiepress-food-add', get_stylesheet_directory_uri() . '/assets/js/food-add.js', array( 'techiepress-food-jq' ), '1.0.0', true );
+		// Bootstrap & Fontawesome css for our tab navigation.
+		wp_enqueue_style( 'bootstrap-css', get_stylesheet_directory_uri() . '/assets/css/bootstrap.min.css', '', '1.0.0', 'all' );
+		wp_enqueue_style( 'fontawesome-css', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css', '', '1.0.0', 'all' );
+
+		// Bring in styles from bootstrap for our tab navigation.
+		wp_enqueue_script( 'bootstrap-bundle', get_stylesheet_directory_uri() . '/assets/js/bootstrap.bundle.min.js', array( 'jquery' ), '1.0.0', true );
+		wp_enqueue_script( 'techiepress-food-add', get_stylesheet_directory_uri() . '/assets/js/food-add.js', array( 'jquery' ), '1.0.0', true );
+
+		wp_localize_script( 'techiepress-food-add', 'ajax_object', [ 'ajax_url' => admin_url('admin-ajax.php') ] );
 	}
 
+}
+
+add_action( 'wp_ajax_techiepress_food_ajax_add_to_cart', 'techiepress_food_ajax_add_to_cart' );
+add_action( 'wp_ajax_nopriv_techiepress_food_ajax_add_to_cart', 'techiepress_food_ajax_add_to_cart' );
+
+function techiepress_food_ajax_add_to_cart() {
+
+	$product_id   = absint($_POST['product_id']);
+	$variation_id = absint($_POST['variation_id']);
+	$quantity     = 1;
+
+	if ( WC()->cart->add_to_cart($product_id,$quantity,$variation_id) ) {
+		do_action( 'woocommerce_ajax_added_to_cart', $product_id);
+
+		if ( 'yes' === get_option( 'woocommerce_cart_redirect_after_add' ) ) {
+			wc_add_to_cart_message( array( $product_id => $quantity ), true );
+		}
+	} else {
+		$data = array (
+			'error' => true,
+			'product_url' => get_permalink( $product_id )
+		);
+	}
+
+	wp_send_json($product_id);
+	
+	wp_die();
 }
